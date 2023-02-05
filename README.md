@@ -28,7 +28,7 @@ After terraform setups the EC2 instance and required security groups, `public_ip
 
 #### Setup Gitlab Runner
 
-Everything is already pre-installed and only need to register the gitlab-runner. Like so:
+Everything is already pre-installed and so only need to register the gitlab-runner. Like so:
 1. Log in to your GitLab instance as an administrator.
 2. Go to the project you want to add the runner to.
 3. Go to "Settings" -> "CI/CD" -> "Runners".
@@ -36,3 +36,8 @@ Everything is already pre-installed and only need to register the gitlab-runner.
 5. Copy the registration token displayed on the page.
 6. SSH to EC2 instance and register your runner:
 	- `gitlab-runner register --token "<token>" --url "<url>" --executor "docker" --description "My runner" --tag-list "my-tag" --docker-image "alpine:3.12"`
+
+#### Destroying created AWS resources
+
+To destroy Gitlab instance and all of the resources created by Terraform code, just type: 
+- `terraform destroy -auto-approve`
