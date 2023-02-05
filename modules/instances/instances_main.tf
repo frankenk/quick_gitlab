@@ -18,7 +18,7 @@ resource "aws_instance" "gitlab_instance" {
     yum install -y curl policycoreutils-python openssh-server openssh-clients perl
     curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash
     export public_ip=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
-    EXTERNAL_URL="https://$public_ip" GITLAB_ROOT_PASSWORD=random_password yum install -y gitlab-ee
+    EXTERNAL_URL="https://$public_ip" yum install -y gitlab-ee
     echo "--------Gitlab Setup Done---------"
     echo '#!/bin/bash' >> /home/ec2-user/update-gitlab-url.sh
     echo 'export public_ip=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)' >> /home/ec2-user/update-gitlab-url.sh
