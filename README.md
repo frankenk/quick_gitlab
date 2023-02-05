@@ -1,10 +1,10 @@
 
-Terraform code that setups simple publicly available Gitlab CE testing instance in AWS (HTTP). Uses `t2.medium` instance type - minimum supported specs by Gitlab.
+Terraform code that setups simple publicly available Gitlab CE (HTTP) testing instance  in AWS. Uses `t2.medium` instance type - minimum supported specs by Gitlab.
 
 Gitlab instance external IP will be automatically updated in `/etc/gitlab/gitlab.rb` in case instance is shutdown. 
 - To see new IP just type `terraform refresh` or check in AWS console. 
 
-**Note**, for it setups HTTP instance (`http://`).  Made it for personal use, so use my bad code at your own risk.
+**Note**, for now it setups HTTP instance (`http://`).  Made it for personal use, so use my bad code at your own risk.
 
 ## Requirements
 
