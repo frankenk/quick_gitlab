@@ -1,10 +1,10 @@
 
-Terraform code that setups simple publicly available Gitlab CE (HTTP) testing instance  in AWS. Uses `t2.medium` instance type - minimum supported specs by Gitlab.
+Terraform code that setups simple publicly available Gitlab CE testing instance  in AWS. Uses `t2.medium` instance type - minimum supported specs by Gitlab.
 
 Gitlab instance external IP will be automatically updated in `/etc/gitlab/gitlab.rb` in case instance is shutdown. 
 - To see new IP just type `terraform refresh` or check in AWS console. 
 
-**Note**, for now it setups HTTP instance (`http://`).  Made it for personal use, so use my bad code at your own risk.
+**Note** Made it for personal use, so use my bad code at your own risk.
 
 ## Requirements
 
@@ -13,12 +13,14 @@ Gitlab instance external IP will be automatically updated in `/etc/gitlab/gitlab
 
 ## Usage
 
+Gitlab instances will be created in default VPC. If you want to specify custom VPC/ Subnet, edit add values to `variables.tf`.
+
 1. Setup and run Terraform:
 	- `terraform init`
 	- `terraform plan`
 	- `terraform apply -auto-approve`
 
-After terraform setups the EC2 instance and required security groups, `public_ip_address` for  instance will be visible as output. And private key `gitlab_key.pem` will be created in current directory, use it to access the instance:
+After terraform setups the EC2 instance and required security groups, `public_ip_address` for instance will be visible as output. And private key `gitlab_key.pem` will be created in current directory, use it to access the instance:
 - `ssh -i gitlab_key.pem ec2-user@<instance_ip>` (don't forget to add required permissions to key `chmod 600 gitlab_key.pem`)
 
 2. Get your Gitlab instance root password:

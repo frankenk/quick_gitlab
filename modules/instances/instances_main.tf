@@ -9,8 +9,10 @@ data "aws_ami" "aws_linux2" { #will always gets you laters version of AMI
 
 #FIX THIS SO user_data uses FILE
 resource "aws_instance" "gitlab_instance" {
+  count = var.instance_number
   ami           = data.aws_ami.aws_linux2.id
   instance_type = var.instance_type
+  subnet_id      =  var.subnet_id
   key_name = aws_key_pair.deployer.id
   vpc_security_group_ids = [aws_security_group.allow_gitlab_traffic.id]
   user_data = <<-EOF
@@ -39,13 +41,14 @@ resource "aws_instance" "gitlab_instance" {
   EOF
 
   tags = { 
-    Name = "GitLab CE"
+    Name = "GitLab CE-${count.index + 1}"
   }
 }
 
 resource "aws_security_group" "allow_gitlab_traffic" {
   name        = "allow_gitlab_traffic"
   description = "Allow SSH, HTTP and HTTPS traffic inbound, and all outbound traffic"
+  vpc_id = var.vpc_id
 
   ingress {
     from_port   = 22
