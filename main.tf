@@ -10,3 +10,6 @@ output "public_ip_address" {
     value = module.gitlab_instance.public_ip_address
 }
 
+output "instance_root_password" {
+    value = module.gitlab_instance.generated_root_password
+}
