@@ -13,7 +13,7 @@ Gitlab instance external IP will be automatically updated in `/etc/gitlab/gitlab
 
 ## Usage
 
-Gitlab instances will be created in default VPC. If you want to specify custom VPC/ Subnet, edit add values to `variables.tf`.
+Gitlab instances will be created in default VPC. If you want to specify custom VPC/ Subnet, you can specify them in `variables.tf`.
 
 1. Setup and run Terraform:
 	- `terraform init`
