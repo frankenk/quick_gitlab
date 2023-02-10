@@ -23,7 +23,7 @@ Gitlab instances will be created in default VPC. If you want to specify custom V
 After terraform setups the EC2 instance and required security groups, `public_ip_address` and `instance_root_password` for instance will be visible as output (type `terraform refresh` to see again). And private key `gitlab_key.pem` will be created in current directory, use it to access the instance if you wish:
 - `ssh -i gitlab_key.pem ec2-user@<instance_ip>` (don't forget to add required permissions to key `chmod 600 gitlab_key.pem`)
 
-2. Login to Gitlab `https://<instance_ip>`
+2. Login to Gitlab `https://<instance_dns>`
 
 #### Setup Gitlab Runner
 

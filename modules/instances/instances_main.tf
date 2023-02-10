@@ -27,12 +27,12 @@ resource "aws_instance" "gitlab_instance" {
     #!/bin/bash
     yum install -y curl policycoreutils-python openssh-server openssh-clients perl
     curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash
-    export public_ip=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+    export public_ip=$(curl http://169.254.169.254/latest/meta-data/public-hostname)
     EXTERNAL_URL="https://$public_ip" GITLAB_ROOT_PASSWORD=${random_string.gitlab_root_password.result} yum install -y gitlab-ee
     echo "--------Gitlab Setup Done---------"
     echo '#!/bin/bash' >> /home/ec2-user/update-gitlab-url.sh
-    echo 'export public_ip=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)' >> /home/ec2-user/update-gitlab-url.sh
-    echo 'sudo sed -i "s/external_url.*/external_url 'http:\/\/$public_ip'/" /etc/gitlab/gitlab.rb' >> /home/ec2-user/update-gitlab-url.sh
+    echo 'export public_ip=$(curl http://169.254.169.254/latest/meta-data/public-hostname)' >> /home/ec2-user/update-gitlab-url.sh
+    echo 'sudo sed -i "s/external_url.*/external_url '\''https:\\/\\/$public_ip'\''/" /etc/gitlab/gitlab.rb' >> /home/ec2-user/update-gitlab-url.sh
     echo 'sudo gitlab-ctl restart' >> /home/ec2-user/update-gitlab-url.sh
     chmod +x /home/ec2-user/update-gitlab-url.sh
     (crontab -l ; echo "@reboot /home/ec2-user/update-gitlab-url.sh") | crontab -
