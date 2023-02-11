@@ -1,4 +1,4 @@
-data "aws_ami" "aws_linux2" { #will always gets you laters version of AMI
+data "aws_ami" "aws_linux2" { #Will always get you latest version of AMI
   most_recent = true
   owners      = ["amazon"]
   filter {
@@ -15,7 +15,6 @@ resource "random_string" "gitlab_root_password" {
   numeric = true
 }
 
-#FIX THIS SO user_data uses FILE
 resource "aws_instance" "gitlab_instance" {
   count = var.instance_number
   ami           = data.aws_ami.aws_linux2.id
@@ -28,11 +27,11 @@ resource "aws_instance" "gitlab_instance" {
     yum install -y curl policycoreutils-python openssh-server openssh-clients perl
     curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash
     export public_ip=$(curl http://169.254.169.254/latest/meta-data/public-hostname)
-    EXTERNAL_URL="https://$public_ip" GITLAB_ROOT_PASSWORD=${random_string.gitlab_root_password.result} yum install -y gitlab-ee
+    EXTERNAL_URL="http://$public_ip" GITLAB_ROOT_PASSWORD=${random_string.gitlab_root_password.result} yum install -y gitlab-ee
     echo "--------Gitlab Setup Done---------"
     echo '#!/bin/bash' >> /home/ec2-user/update-gitlab-url.sh
     echo 'export public_ip=$(curl http://169.254.169.254/latest/meta-data/public-hostname)' >> /home/ec2-user/update-gitlab-url.sh
-    echo 'sudo sed -i "s/external_url.*/external_url '\''https:\\/\\/$public_ip'\''/" /etc/gitlab/gitlab.rb' >> /home/ec2-user/update-gitlab-url.sh
+    echo 'sudo sed -i "s/external_url.*/external_url '\''http:\\/\\/$public_ip'\''/" /etc/gitlab/gitlab.rb' >> /home/ec2-user/update-gitlab-url.sh
     echo 'sudo gitlab-ctl restart' >> /home/ec2-user/update-gitlab-url.sh
     chmod +x /home/ec2-user/update-gitlab-url.sh
     (crontab -l ; echo "@reboot /home/ec2-user/update-gitlab-url.sh") | crontab -
